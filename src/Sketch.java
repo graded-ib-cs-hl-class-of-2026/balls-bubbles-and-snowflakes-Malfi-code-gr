@@ -16,6 +16,8 @@ public class Sketch extends PApplet {
     private Snowflake snowflake3;
     private Snowflake snowflake4;
 
+    public boolean hIsHeld = false;
+
     /**
      * This method can only be used to change the window size. It runs before the
      * window is created.
@@ -29,15 +31,10 @@ public class Sketch extends PApplet {
      * this to initialize the sketch.
      */
     public void setup() {
-        ball1 = new Ball(this, 20, 100, 100, 2, -1);
-        ball2 = new Ball(this, 50, 200, 200, 1, 2);
-        ball3 = new Ball(this, 10, 300, 500, -2, 1);
-        ball4 = new Ball(this, 30, 400, 600, -1, -2);
-        
-        ball1.setColors(color(255,255,255), color(0,0,0));
-        ball2.setColors(color(255,0,255), color(0,255,0));
-        ball3.setColors(color(0,255,0), color(0,0,255));
-        ball4.setColors(color(0,0,255), color(255,0,0));
+        ball1 = new Ball(this);
+        ball2 = new Ball(this);
+        ball3 = new Ball(this);
+        ball4 = new Ball(this);
 
         bubble1 = new Bubble(this, 20, 150, -20, 2, -7);
         bubble2 = new Bubble(this, 50, 250, -50, 1, -1);
@@ -45,9 +42,9 @@ public class Sketch extends PApplet {
         bubble4 = new Bubble(this, 30, 450, -30, -1, -2);
 
         snowflake1 = new Snowflake(this);
-        snowflake2 = new Snowflake(this,40,200,-50,1,7);
-        snowflake3 = new Snowflake(this,20,100,-200,-2,8);
-        snowflake4 = new Snowflake(this,15,-15,-100,0,12);
+        snowflake2 = new Snowflake(this);
+        snowflake3 = new Snowflake(this);
+        snowflake4 = new Snowflake(this);
     }
 
     /**
@@ -57,32 +54,105 @@ public class Sketch extends PApplet {
      */
     public void draw() {
         background(180, 180, 255);
+        ball1.collidesWith(ball2);
+        ball1.collidesWith(ball3);
+        ball1.collidesWith(ball4);
         ball1.draw();
-        ball1.move();
+        if (!ball1.mouseOver() || !hIsHeld) {
+            ball1.move();
+        }
+
+        ball2.collidesWith(ball1);
+        ball2.collidesWith(ball3);
+        ball2.collidesWith(ball4);
         ball2.draw();
-        ball2.move();
+        if (!ball2.mouseOver() || !hIsHeld) {
+            ball2.move();
+        }
+
+        ball3.collidesWith(ball1);
+        ball3.collidesWith(ball2);
+        ball3.collidesWith(ball4);
         ball3.draw();
-        ball3.move();
+        if (!ball3.mouseOver() || !hIsHeld) {
+            ball3.move();
+        }
+
+        ball4.collidesWith(ball1);
+        ball4.collidesWith(ball2);
+        ball4.collidesWith(ball3);
         ball4.draw();
-        ball4.move();
+        if (!ball4.mouseOver() || !hIsHeld) {
+            ball4.move();
+        }
 
         bubble1.draw();
-        bubble1.move();
+        if (!bubble1.mouseOver() || !hIsHeld) {
+            bubble1.move();
+        }
         bubble2.draw();
-        bubble2.move();
+        if (!bubble2.mouseOver() || !hIsHeld) {
+            bubble2.move();
+        }
         bubble3.draw();
-        bubble3.move();
+        if (!bubble3.mouseOver() || !hIsHeld) {
+            bubble3.move();
+        }
         bubble4.draw();
-        bubble4.move();
+        if (!bubble4.mouseOver() || !hIsHeld) {
+            bubble4.move();
+        }
 
         snowflake1.draw();
-        snowflake1.move();
+        if (!snowflake1.mouseOver() || !hIsHeld) {
+            snowflake1.move();
+        }
         snowflake2.draw();
-        snowflake2.move();
+        if (!snowflake2.mouseOver() || !hIsHeld) {
+            snowflake2.move();
+        }
         snowflake3.draw();
-        snowflake3.move();
+        if (!snowflake3.mouseOver() || !hIsHeld) {
+            snowflake3.move();
+        }
         snowflake4.draw();
-        snowflake4.move();
+        if (!snowflake4.mouseOver() || !hIsHeld) {
+            snowflake4.move();
+        }
+    }
+
+    /** 
+     * Whenever the mouse is clicked, checks if all bubbles can be popped and does
+     */
+    public void mousePressed() {
+        bubble1.popBubble();
+        bubble2.popBubble();
+        bubble3.popBubble();
+        bubble4.popBubble();
+    }
+
+    public void keyPressed() {
+        if (keyCode == 32){ 
+            ball1.launch();
+            ball2.launch();
+            ball3.launch();
+            ball4.launch();
+        }
+        if (keyCode == 67){
+            ball1.changeColor();
+            ball2.changeColor();
+            ball3.changeColor();
+            ball4.changeColor();
+        }
+        if (keyCode == 72) {
+            hIsHeld = true;
+        }
+    }
+
+    public void keyReleased() {
+        if (keyCode == 72) {
+            hIsHeld = false;
+        }
     }
 
     /** All processing sketches have to use this main method. Don't touch this! */

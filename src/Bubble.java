@@ -16,7 +16,7 @@ class Bubble {
         y = s.height + radius;
         xSpeed = 2;
         ySpeed = -1;
-        fillColor = s.color(255,255,255,0);
+        fillColor = s.color(0,0,255,50);
         borderColor = s.color(0, 0, 0);
     }
 
@@ -27,7 +27,7 @@ class Bubble {
         this.y = y;
         this.xSpeed = xspeed;
         this.ySpeed = yspeed;
-        fillColor = s.color(255,255,255,0);
+        fillColor = s.color(0,0,100,50);
         borderColor = s.color(0, 0, 0);
     }
     // accessors for the radius, diameter, x, and y values 
@@ -57,36 +57,37 @@ class Bubble {
         x = x + xSpeed;
         y = y + ySpeed;
         if (x > s.width - radius) {
-            x = radius;
-            y = s.height;
+            radius = (float)(Math.random()*40)+10; // random radius between 10 and 50
+            x = (float)(Math.random()*s.width); // places at a random location x. Doesn't account for being placed inside a wall, but in such case, it just repeats on the next frame (this whole process is invisible since it's still below the screen and won't cause flashes)
+            y = s.height + radius; // places bellow the bottom of the screen
+            xSpeed = (float)((Math.random()-0.5)*5); // assigns a random xSpeed between -2.5 and 2.5
+            ySpeed = -((float)(Math.random()*6)+2); // random ySpeed between -2 and -8
         } else if(x < radius) {
-            x = s.width - radius;
-        } else if (y > s.height - radius) {
-            y = radius;
+            radius = (float)(Math.random()*90)+10;
+            x = (float)(Math.random()*s.width);
+            y = s.height + radius;
+            xSpeed = (float)((Math.random()-0.5)*5);
+            ySpeed = -((float)(Math.random()*6)+2);
         } else if (y < radius) {
-            y = s.height - radius;
+            radius = (float)(Math.random()*90)+10;
+            y = s.height + radius;
+            xSpeed = (float)((Math.random()-0.5)*5);
+            ySpeed = -((float)(Math.random()*6)+2);
         }
-
-        // x = x + xSpeed;
-        // y = y + ySpeed;
-        // if (x > s.width - radius) {
-        //     radius = (float)(Math.random()*40)+10; // random radius between 10 and 50
-        //     x = (float)(Math.random()*s.width); // places at a random location x. Doesn't account for being placed inside a wall, but in such case, it just repeats on the next frame (this whole process is invisible since it's still below the screen and won't cause flashes)
-        //     y = s.height + radius; // places bellow the bottom of the screen
-        //     xSpeed = (float)((Math.random()-0.5)*5); // assigns a random xSpeed between -2.5 and 2.5
-        //     ySpeed = -((float)(Math.random()*6)+2); // random ySpeed between 2 and 8
-        // } else if(x < radius) {
-        //     radius = (float)(Math.random()*90)+10;
-        //     x = (float)(Math.random()*s.width);
-        //     y = s.height + radius;
-        //     xSpeed = (float)((Math.random()-0.5)*5);
-        //     ySpeed = -((float)(Math.random()*6)+2);
-        // } else if (y < radius) {
-        //     radius = (float)(Math.random()*90)+10;
-        //     y = s.height + radius;
-        //     xSpeed = (float)((Math.random()-0.5)*5);
-        //     ySpeed = -((float)(Math.random()*6)+2);
-        // }
     }
 
+    public boolean mouseOver() {
+        return (Sketch.dist(s.mouseX,s.mouseY,x,y) < radius);
+    }
+
+
+    /**
+     * Called whenever the mouse is clicked through bubble[num].popBubble(). If the mouse is over the bubble, it pops (resets position back to past the bottom of the screen and random x value)
+     */
+    public void popBubble(){
+        if (mouseOver()) {
+            x = (s.random(radius,s.width-radius));
+            y = s.height + radius;
+        }
+    }
 }

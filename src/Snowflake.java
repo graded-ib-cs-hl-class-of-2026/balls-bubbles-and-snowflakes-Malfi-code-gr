@@ -9,19 +9,12 @@ class Snowflake {
 
     public Snowflake(Sketch sketch) {
         s = sketch;
-        radius = 20;
-        x = 100;
-        y = 100;
-        xSpeed = 2;
-        ySpeed = 9;
+        radius = (int)(Math.random()*40)+10;
+        x = s.width/2;
+        y = -radius;
+        xSpeed = (float)(Math.random()-0.5)*2;
+        ySpeed = (float)(Math.random()*8.0+2);
         borderColor = s.color(245,245,255);
-
-        // s = sketch;
-        // radius = (int)(Math.random()*40)+10;
-        // x = s.width/2;
-        // y = -radius;
-        // xSpeed = (float)(Math.random()-0.5)*2;
-        // ySpeed = (float)(Math.random()*8.0+2);
     }
 
     public Snowflake(Sketch sketch, float radius, float x, float y, float xspeed, float yspeed) {
@@ -53,5 +46,9 @@ class Snowflake {
             x = (float)(Math.random()*s.width);
             y = -radius;
         }
+    }
+
+    public boolean mouseOver() {
+        return (Sketch.dist(s.mouseX,s.mouseY,x,y) < radius);
     }
 }
