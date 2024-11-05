@@ -22,6 +22,11 @@ class Ball {
     /** The color of the outside of the ball */
     private int borderColor;
 
+    private boolean isGrabbed = false;
+    private float lastMouseX, lastMouseY;
+    private float distanceMouseX, distanceMouseY;
+
+
     /** Empty constructor assigns random values */
     public Ball(Sketch sketch) {
         s = sketch;
@@ -86,27 +91,32 @@ class Ball {
      * Moves the ball so that the next time it draws it will be in a different place
      */
     public void move() {
-        x += xSpeed;
-        y += ySpeed;
-        if (x > s.width - radius) {
-            x = (s.width - radius);
-            xSpeed = -xSpeed * 0.9f;
-        }
-        if (x < radius) {
-            x = (radius);
-            xSpeed = -xSpeed * 0.9f;
-        }
-        if (y > s.height - radius) {
-            y = s.height - radius;
-            ySpeed = -(ySpeed) * 0.95f; // damping
-        }
-        if (y < radius) {
-            y = radius;
-            ySpeed = -(ySpeed) * 0.95f;
-        }
-        ySpeed += 1; // gravity
-        if (ySpeed > 50) { // terminal velocity
-            ySpeed = 50;
+        if (isGrabbed) {
+            x = s.mouseX + distanceMouseX;
+            y = s.mouseY + distanceMouseY;
+        } else {
+            x += xSpeed;
+            y += ySpeed;
+            if (x > s.width - radius) {
+                x = (s.width - radius);
+                xSpeed = -xSpeed * 0.9f;
+            }
+            if (x < radius) {
+                x = (radius);
+                xSpeed = -xSpeed * 0.9f;
+            }
+            if (y > s.height - radius) {
+                y = s.height - radius;
+                ySpeed = -(ySpeed) * 0.95f; // damping
+            }
+            if (y < radius) {
+                y = radius;
+                ySpeed = -(ySpeed) * 0.95f;
+            }
+            ySpeed += 1; // gravity
+            if (ySpeed > 50) { // terminal velocity
+                ySpeed = 50;
+            }
         }
     }
 
@@ -159,6 +169,23 @@ class Ball {
         ySpeed += s.random(20,40)*(s.random(0,1) < 0.5 ? -1 : 1);
     }
 
+    public void updateGrabStatus(float mouseX,float mouseY) {
+        distanceMouseX = x - mouseX;
+        distanceMouseY = y - mouseY;
+        if (s.mousePressed && mouseOver()) {
+            isGrabbed = true;
+            lastMouseX = mouseX;
+            lastMouseY = mouseY;
+            xSpeed = 0; // Stop ball movement while grabbed
+            ySpeed = 0;
+        } else if (!s.mousePressed && isGrabbed) {
+            // On mouse release, calculate throw speed
+            xSpeed = (mouseX - lastMouseX) / 6.0f; // Adjusted divisor for smoother throw
+            ySpeed = (mouseY - lastMouseY) / 6.0f;
+            isGrabbed = false;
+        }
+    }
+    
     public void changeColor() {
         fillColor = s.color(s.random(0,255),s.random(0,255),s.random(0,255));
         borderColor = s.color(s.random(0,255),s.random(0,255),s.random(0,255));

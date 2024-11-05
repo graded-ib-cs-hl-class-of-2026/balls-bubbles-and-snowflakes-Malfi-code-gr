@@ -1,20 +1,9 @@
 import processing.core.PApplet;
 
 public class Sketch extends PApplet {
-
-    /** Represents one ball */
-    private Ball ball1;
-    private Ball ball2;
-    private Ball ball3;
-    private Ball ball4;
-    private Bubble bubble1;
-    private Bubble bubble2;
-    private Bubble bubble3;
-    private Bubble bubble4;
-    private Snowflake snowflake1;
-    private Snowflake snowflake2;
-    private Snowflake snowflake3;
-    private Snowflake snowflake4;
+    private Ball ball1, ball2, ball3, ball4;
+    private Bubble bubble1, bubble2, bubble3, bubble4;
+    private Snowflake snowflake1, snowflake2, snowflake3, snowflake4;
 
     public boolean hIsHeld = false;
 
@@ -129,6 +118,17 @@ public class Sketch extends PApplet {
         bubble2.popBubble();
         bubble3.popBubble();
         bubble4.popBubble();
+        ball1.updateGrabStatus(mouseX, mouseY);
+        ball2.updateGrabStatus(mouseX, mouseY);
+        ball3.updateGrabStatus(mouseX, mouseY);
+        ball4.updateGrabStatus(mouseX, mouseY);
+    }
+
+    public void mouseReleased() {
+        ball1.updateGrabStatus(mouseX, mouseY);
+        ball2.updateGrabStatus(mouseX, mouseY);
+        ball3.updateGrabStatus(mouseX, mouseY);
+        ball4.updateGrabStatus(mouseX, mouseY);
     }
 
     public void keyPressed() {
