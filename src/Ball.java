@@ -126,47 +126,31 @@ class Ball {
             this.y -= Sketch.sin(angle) * overlap / 2; // same
             b.x += Sketch.cos(angle) * overlap / 2; // move the other one back half the overlap in accordance with the angle
             b.y += Sketch.sin(angle) * overlap / 2; // same
-            
+            // since i already had to figure out the angle of collision to "reset" the balls backwards, the rest of the physics was a lot easier to figure out
             // handle collisions with balls bouncing with xSpeed and ySpeed updating in accordance with the angle
+            // finds the total speed of each ball (not just horizontal or vertical)
             float thisVelocity = Sketch.sqrt(this.xSpeed * this.xSpeed + this.ySpeed * this.ySpeed);
             float bVelocity = Sketch.sqrt(b.xSpeed * b.xSpeed + b.ySpeed * b.ySpeed);
-
-            float thisVectorAngle = Sketch.atan2(this.ySpeed, this.xSpeed);
-            float bVectorAngle = Sketch.atan2(b.ySpeed, b.xSpeed);
-
-            float thisNewXSpeed = thisVelocity * Sketch.cos(thisVectorAngle - angle);
-            float thisNewYSpeed = thisVelocity * Sketch.sin(thisVectorAngle - angle);
-            float bNewXSpeed = bVelocity * Sketch.cos(bVectorAngle - angle);
-            float bNewYSpeed = bVelocity * Sketch.sin(bVectorAngle - angle);
-
-            // swap speeds
-            float thisFinalXSpeed = bNewXSpeed; 
-            float thisFinalYSpeed = thisNewYSpeed;
-            float bFinalXSpeed = thisNewXSpeed;
-            float bFinalYSpeed = bNewYSpeed;
-
-            this.xSpeed = Sketch.cos(angle) * thisFinalXSpeed + Sketch.cos(angle + Sketch.PI / 2) * thisFinalYSpeed * 0.97f;
-            this.ySpeed = Sketch.sin(angle) * thisFinalXSpeed + Sketch.sin(angle + Sketch.PI / 2) * thisFinalYSpeed * 0.97f;
-            b.xSpeed = Sketch.cos(angle) * bFinalXSpeed + Sketch.cos(angle + Sketch.PI / 2) * bFinalYSpeed;
-            b.ySpeed = Sketch.sin(angle) * bFinalXSpeed + Sketch.sin(angle + Sketch.PI / 2) * bFinalYSpeed;
-            
-            // if (this.ySpeed < 0.1 || b.ySpeed < 0.1) { // it looked very weird whenever one of the balls were on the ground and suddenly gained ySpeed
-            //     float tempX = this.xSpeed;
-            //     this.xSpeed = b.xSpeed;
-            //     b.xSpeed = tempX;
-            // } else {
-            //     // swap speeds
-            //     float tempX = this.xSpeed * 0.97f;
-            //     float tempY = this.ySpeed * 0.97f; // decay
-            //     this.xSpeed = b.xSpeed * 0.97f;
-            //     this.ySpeed = b.ySpeed * 0.97f;
-            //     b.xSpeed = tempX;
-            //     b.ySpeed = tempY;
-            // }
-
-
-
-            
+            // finds the direction (vector angle) of each ball. used to project the velocity onto the line of collision
+            float thisVectorAngle = (float) Math.atan2(this.ySpeed, this.xSpeed);
+            float bVectorAngle = (float) Math.atan2(b.ySpeed, b.xSpeed);
+            // projects each ball’s velocity onto the line of collision to see how much of each goes into where
+            float thisProjectedVelocity = thisVelocity * (float) Sketch.cos(thisVectorAngle - angle);
+            float bProjectedVelocity = bVelocity * (float) Sketch.cos(bVectorAngle - angle);
+            // swap the projected velocities to simulate an elastic collision along the line of impact
+            float tempVelocity = thisProjectedVelocity;
+            thisProjectedVelocity = bProjectedVelocity;
+            bProjectedVelocity = tempVelocity;
+            // find the perpendicular velocities to the line of impact. thisVectorAngle - angle gives the angle between this ball's velocity vector and the collision line
+            // when projecting a vector onto a line at an angle, we use cos to get the component along that line. the perpendicular component is obtained by taking the sin of the angle difference.
+            float thisPerpendicularVelocity = thisVelocity * Sketch.sin(thisVectorAngle - angle);
+            float bPerpendicularVelocity = bVelocity * Sketch.sin(bVectorAngle - angle);
+            // update the xSpeed and ySpeed of each ball based on the new velocities
+            // also adds the perpendicular velocities back in. the reason for angle + pi/2 is because the perpendicular velocity is 90 degrees off from the projected velocity
+            this.xSpeed = Sketch.cos(angle) * thisProjectedVelocity + Sketch.cos(angle + Sketch.PI / 2) * thisPerpendicularVelocity;
+            this.ySpeed = Sketch.sin(angle) * thisProjectedVelocity + Sketch.sin(angle + Sketch.PI / 2) * thisPerpendicularVelocity;
+            b.xSpeed = Sketch.cos(angle) * bProjectedVelocity + Sketch.cos(angle + Sketch.PI / 2) * bPerpendicularVelocity;
+            b.ySpeed = Sketch.sin(angle) * bProjectedVelocity + Sketch.sin(angle + Sketch.PI / 2) * bPerpendicularVelocity;
         }
     }
 
