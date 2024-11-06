@@ -1,12 +1,20 @@
 class Snowflake {
+    /** The sketch that the snowflake is inside */
     private Sketch s;
+    /** the radius of the snowflake */
     private float radius;
+    /** the x coordinate of the snowflake */
     private float x;
+    /** the y coordinate of the snowflake */
     private float y;
+    /** the speed of the snowflake in the x direction */
     private float xSpeed;
+    /** the speed of the snowflake in the y direction */
     private float ySpeed;
+    /** the color of the border of the snowflake */
     private int borderColor;
 
+    /** Empty constructor assigns some random values */
     public Snowflake(Sketch sketch) {
         s = sketch;
         radius = (int)(Math.random()*40)+10;
@@ -17,6 +25,7 @@ class Snowflake {
         borderColor = s.color(245,245,255);
     }
 
+    /** Constructor that assigns all values except color */
     public Snowflake(Sketch sketch, float radius, float x, float y, float xspeed, float yspeed) {
         this.s = sketch;
         this.radius = radius;
@@ -27,6 +36,7 @@ class Snowflake {
         borderColor = s.color(245,245,255);
     }
 
+    /** draws the snowflake on the given sketch */
     public void draw() {
         s.stroke(borderColor);
         s.line(x+radius,y,x-radius,y);
@@ -35,6 +45,7 @@ class Snowflake {
         s.line((float)(x+radius*.707),(float)(y-radius*.707),(float)(x-radius*.707),(float)(y+radius*.707));
     }
 
+    /** moves the snowflake so that the next time it draws it will be in a different place */
     public void move() {
         x += xSpeed;
         y += ySpeed;
@@ -48,6 +59,7 @@ class Snowflake {
         }
     }
 
+    /** returns true if the mouse is over the snowflake */
     public boolean mouseOver() {
         return (Sketch.dist(s.mouseX,s.mouseY,x,y) < radius);
     }
@@ -77,6 +89,4 @@ class Snowflake {
     public int getBorderColor() {
         return borderColor;
     }
-
-    // setters go here
 }

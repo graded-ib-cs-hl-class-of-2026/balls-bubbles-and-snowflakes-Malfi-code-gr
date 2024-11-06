@@ -1,14 +1,16 @@
 import processing.core.PApplet;
 
 public class Sketch extends PApplet {
+    /** An instance of a ball */
     private Ball ball1, ball2, ball3, ball4;
+    /** An instance of a bubble */
     private Bubble bubble1, bubble2, bubble3, bubble4;
+    /** An instance of a snowflake */
     private Snowflake snowflake1, snowflake2, snowflake3, snowflake4;
 
+    /** Whether the H key is held */
     public boolean hIsHeld = false;
 
-    float lastMouseX = mouseX;
-    float lastMouseY = mouseY;
     /**
      * This method can only be used to change the window size. It runs before the
      * window is created.
@@ -110,8 +112,6 @@ public class Sketch extends PApplet {
         if (!snowflake4.mouseOver() || !hIsHeld) {
             snowflake4.move();
         }
-        lastMouseX = mouseX;
-        lastMouseY = mouseY;
     }
 
     /** 

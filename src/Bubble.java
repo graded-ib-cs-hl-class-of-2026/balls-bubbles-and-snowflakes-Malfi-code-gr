@@ -1,12 +1,20 @@
 class Bubble {
 
+    /** The sketch that the bubble is inside */
     private Sketch s;
+    /** the radius of the ball */
     private float radius;
+    /** the x coordinate of the ball */
     private float x;
+    /** the y coordinate of the ball */
     private float y;
+    /** the speed of the ball in the x direction */
     private float xSpeed;
+    /** the speed of the ball in the y direction */
     private float ySpeed;
+    /** the color of the ball */
     private int fillColor;
+    /** the color of the border of the ball */
     private int borderColor;
 
     /** Empty constructor assigns some random values and some fixed */

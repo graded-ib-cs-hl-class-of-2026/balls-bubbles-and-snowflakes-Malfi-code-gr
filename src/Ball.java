@@ -95,10 +95,7 @@ class Ball {
         }
     }
 
-    // public void debug(String parameter) {
-    //     System.out.println(parameter + " = " + this.parameter);
-    // }
-
+    /** Checks if the ball is colliding with another ball (b) and updates the speed of each ball accordingly */
     public void collidesWith(Ball b) {
         if (Sketch.dist(this.x,this.y,b.x,b.y) < this.radius + b.radius) {
             // move them back to where they're just touching
