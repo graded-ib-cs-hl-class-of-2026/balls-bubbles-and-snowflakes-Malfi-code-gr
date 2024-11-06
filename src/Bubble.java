@@ -9,6 +9,7 @@ class Bubble {
     private int fillColor;
     private int borderColor;
 
+    /** Empty constructor assigns some random values and some fixed */
     public Bubble(Sketch sketch) {
         s = sketch;
         radius = (int)((Math.random()*80)+20);
@@ -20,6 +21,7 @@ class Bubble {
         borderColor = s.color(0, 0, 0);
     }
 
+    /** Constructor that assigns all values except color */
     public Bubble(Sketch sketch, float radius, float x, float y, float xspeed, float yspeed) {
         this.s = sketch;
         this.radius = radius;
@@ -30,29 +32,15 @@ class Bubble {
         fillColor = s.color(0,0,100,50);
         borderColor = s.color(0, 0, 0);
     }
-    // accessors for the radius, diameter, x, and y values 
-    public float getRadius() {
-        return radius;
-    }
 
-    public float getDiameter() {
-        return radius * 2;
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
+    /** draws the bubble on the given sketch */
     public void draw() {
         s.stroke(borderColor);
         s.fill(fillColor);
         s.circle(x, y, radius*2);
     }
 
+    /** moves the ball so that the next time it draws it will be in a different place */
     public void move() {
         x = x + xSpeed;
         y = y + ySpeed;
@@ -76,6 +64,7 @@ class Bubble {
         }
     }
 
+    /** Returns true if the mouse is over the bubble */
     public boolean mouseOver() {
         return (Sketch.dist(s.mouseX,s.mouseY,x,y) < radius);
     }
@@ -89,5 +78,38 @@ class Bubble {
             x = (s.random(radius,s.width-radius));
             y = s.height + radius;
         }
+    }
+
+    // accessors
+    public float getRadius() {
+        return radius;
+    }
+
+    public float getDiameter() {
+        return radius * 2;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+    
+    public float getXSpeed() {
+        return xSpeed;
+    }
+
+    public float getYSpeed() {
+        return ySpeed;
+    }
+
+    public int getFillColor() {
+        return fillColor;
+    }
+
+    public int getBorderColor() {
+        return borderColor;
     }
 }

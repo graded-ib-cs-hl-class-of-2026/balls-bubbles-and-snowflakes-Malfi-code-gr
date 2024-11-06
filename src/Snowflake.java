@@ -51,4 +51,32 @@ class Snowflake {
     public boolean mouseOver() {
         return (Sketch.dist(s.mouseX,s.mouseY,x,y) < radius);
     }
+
+    // accessors go here
+
+    public float getRadius() {
+        return radius;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getXSpeed() {
+        return xSpeed;
+    }
+
+    public float getYSpeed() {
+        return ySpeed;
+    }
+
+    public int getBorderColor() {
+        return borderColor;
+    }
+
+    // setters go here
 }

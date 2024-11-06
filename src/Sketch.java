@@ -7,6 +7,8 @@ public class Sketch extends PApplet {
 
     public boolean hIsHeld = false;
 
+    float lastMouseX = mouseX;
+    float lastMouseY = mouseY;
     /**
      * This method can only be used to change the window size. It runs before the
      * window is created.
@@ -43,11 +45,11 @@ public class Sketch extends PApplet {
      */
     public void draw() {
         background(180, 180, 255);
-        ball1.collidesWith(ball2);
+        ball1.collidesWith(ball2); // checks if the ball is colliding with every other ball
         ball1.collidesWith(ball3);
         ball1.collidesWith(ball4);
         ball1.draw();
-        if (!ball1.mouseOver() || !hIsHeld) {
+        if (!ball1.mouseOver() || !hIsHeld) { // If the mouse is over the snowflake and H is held, don't move it
             ball1.move();
         }
 
@@ -76,7 +78,7 @@ public class Sketch extends PApplet {
         }
 
         bubble1.draw();
-        if (!bubble1.mouseOver() || !hIsHeld) {
+        if (!bubble1.mouseOver() || !hIsHeld) { // If the mouse is over the snowflake and H is held, don't move it
             bubble1.move();
         }
         bubble2.draw();
@@ -93,7 +95,7 @@ public class Sketch extends PApplet {
         }
 
         snowflake1.draw();
-        if (!snowflake1.mouseOver() || !hIsHeld) {
+        if (!snowflake1.mouseOver() || !hIsHeld) { // If the mouse is over the snowflake and H is held, don't move it
             snowflake1.move();
         }
         snowflake2.draw();
@@ -108,6 +110,8 @@ public class Sketch extends PApplet {
         if (!snowflake4.mouseOver() || !hIsHeld) {
             snowflake4.move();
         }
+        lastMouseX = mouseX;
+        lastMouseY = mouseY;
     }
 
     /** 
@@ -124,32 +128,43 @@ public class Sketch extends PApplet {
         ball4.updateGrabStatus(mouseX, mouseY);
     }
 
+    /** Whenever the mouse is released, updates the grab status of each ball */
     public void mouseReleased() {
-        ball1.updateGrabStatus(mouseX, mouseY);
-        ball2.updateGrabStatus(mouseX, mouseY);
-        ball3.updateGrabStatus(mouseX, mouseY);
-        ball4.updateGrabStatus(mouseX, mouseY);
+        ball1.updateGrabStatus(mouseX,mouseY);
+        ball2.updateGrabStatus(mouseX,mouseY);
+        ball3.updateGrabStatus(mouseX,mouseY);
+        ball4.updateGrabStatus(mouseX,mouseY);
+    }
+    
+    /** Whenever the mouse is dragged, updates each ball's position if it's currently grabbed */
+    public void mouseDragged() {
+        ball1.updateGrabbedPosition(mouseX, mouseY);
+        ball2.updateGrabbedPosition(mouseX, mouseY);
+        ball3.updateGrabbedPosition(mouseX, mouseY);
+        ball4.updateGrabbedPosition(mouseX, mouseY);
     }
 
+    /** Called whenever any key is pressed. Checks if they're certain keys to perform certain actions */
     public void keyPressed() {
-        if (keyCode == 32){ 
+        if (keyCode == 32){ // If space is pressed, launch all balls
             ball1.launch();
             ball2.launch();
             ball3.launch();
             ball4.launch();
         }
-        if (keyCode == 67){
+        if (keyCode == 67){ // If c is pressed, change the color of all balls
             ball1.changeColor();
             ball2.changeColor();
             ball3.changeColor();
             ball4.changeColor();
         }
-        if (keyCode == 72) {
+        if (keyCode == 72) { // If h is pressed, set hIsHeld to true
             hIsHeld = true;
         }
     }
 
-    public void keyReleased() {
+    /** Called whenever a key is released. Works similarly to keyPressed */
+    public void keyReleased() { // If h is released, set hIsHeld to false
         if (keyCode == 72) {
             hIsHeld = false;
         }
