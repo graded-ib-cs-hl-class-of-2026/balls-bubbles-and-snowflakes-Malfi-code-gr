@@ -55,7 +55,6 @@ public class Sketch extends PApplet {
             ball1.move();
         }
 
-        ball2.collidesWith(ball1);
         ball2.collidesWith(ball3);
         ball2.collidesWith(ball4);
         ball2.draw();
@@ -63,17 +62,12 @@ public class Sketch extends PApplet {
             ball2.move();
         }
 
-        ball3.collidesWith(ball1);
-        ball3.collidesWith(ball2);
         ball3.collidesWith(ball4);
         ball3.draw();
         if (!ball3.mouseOver() || !hIsHeld) {
             ball3.move();
         }
 
-        ball4.collidesWith(ball1);
-        ball4.collidesWith(ball2);
-        ball4.collidesWith(ball3);
         ball4.draw();
         if (!ball4.mouseOver() || !hIsHeld) {
             ball4.move();

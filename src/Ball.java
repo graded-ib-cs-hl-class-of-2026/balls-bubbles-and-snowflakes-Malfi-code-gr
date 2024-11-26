@@ -83,6 +83,15 @@ class Ball {
             if (y > s.height - radius) {
                 y = s.height - radius;
                 ySpeed = -(ySpeed) * 0.95f; // damping
+                // add friction on ground
+               
+            }
+            if (Math.abs(ySpeed) < 1 && y >= s.height - radius - 2) {
+                if (Math.abs(xSpeed) < 0.01) {
+                    xSpeed = 0;
+                }else {
+                    xSpeed -= 0.01 * Math.signum(xSpeed);
+                }
             }
             if (y < radius) {
                 y = radius;
@@ -132,10 +141,10 @@ class Ball {
             float bPerpendicularVelocity = bVelocity * Sketch.sin(bVectorAngle - angle);
             // update the xSpeed and ySpeed of each ball based on the new velocities
             // also adds the perpendicular velocities back in. the reason for angle + pi/2 is because the perpendicular velocity is 90 degrees off from the projected velocity
-            this.xSpeed = Sketch.cos(angle) * thisProjectedVelocity + Sketch.cos(angle + Sketch.PI / 2) * thisPerpendicularVelocity;
-            this.ySpeed = Sketch.sin(angle) * thisProjectedVelocity + Sketch.sin(angle + Sketch.PI / 2) * thisPerpendicularVelocity;
-            b.xSpeed = Sketch.cos(angle) * bProjectedVelocity + Sketch.cos(angle + Sketch.PI / 2) * bPerpendicularVelocity;
-            b.ySpeed = Sketch.sin(angle) * bProjectedVelocity + Sketch.sin(angle + Sketch.PI / 2) * bPerpendicularVelocity;
+            this.xSpeed = 0.98f * Sketch.cos(angle) * thisProjectedVelocity + Sketch.cos(angle + Sketch.PI / 2) * thisPerpendicularVelocity;
+            this.ySpeed = 0.98f * Sketch.sin(angle) * thisProjectedVelocity + Sketch.sin(angle + Sketch.PI / 2) * thisPerpendicularVelocity;
+            b.xSpeed = 0.98f * Sketch.cos(angle) * bProjectedVelocity + Sketch.cos(angle + Sketch.PI / 2) * bPerpendicularVelocity;
+            b.ySpeed = 0.98f * Sketch.sin(angle) * bProjectedVelocity + Sketch.sin(angle + Sketch.PI / 2) * bPerpendicularVelocity;
         }
     }
 
